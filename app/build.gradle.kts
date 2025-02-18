@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(platform(libs.ktor.bom))
-    implementation(platform(libs.ktor.client.core))
-    implementation(platform(libs.ktor.client.cio))
-    implementation(platform(libs.ktor.client.contentNegotiation))
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.contentNegotiation)
 }
