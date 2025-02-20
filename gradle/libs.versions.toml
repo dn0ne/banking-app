@@ -13,6 +13,7 @@ navigation = "2.8.7"
 ktor = "3.1.0"
 serializationJson = "1.8.0"
 koin = "4.1.0-Beta5"
+datetime = "0.6.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 

@@ -60,6 +60,7 @@ dependencies {
 
     implementation(libs.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.koin.android)
 
