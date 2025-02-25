@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.dn0ne.banking.ui.theme.BlueDarker
 
@@ -69,6 +69,9 @@ fun BaseLoginForm(
                 placeholder = {
                     Text(text = "example@domain.com")
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -80,6 +83,9 @@ fun BaseLoginForm(
                 label = {
                     Text(text = "Password")
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
