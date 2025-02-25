@@ -8,20 +8,28 @@ import com.dn0ne.banking.presentation.components.BaseLoginForm
 
 @Composable
 fun SignupScreen(
-    onSignupClick: () -> Unit,
+    state: AuthenticationState,
+    onEvent: (AuthenticationEvent) -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BaseLoginForm(
         title = stringResource(R.string.sign_up),
         mainButtonText = stringResource(R.string.sign_up),
+        onMainButtonClick = {
+            onEvent(AuthenticationEvent.OnConfirmSignupClick)
+        },
         footerText = stringResource(R.string.already_have_account),
         footerButtonText = stringResource(R.string.log_in),
         onFooterButtonClick = onLoginClick,
-        username = "",
-        onUsernameChanged = {},
-        password = "",
-        onPasswordChanged = {},
+        username = state.username,
+        onUsernameChanged = {
+            onEvent(AuthenticationEvent.OnUsernameChanged(it))
+        },
+        password = state.password,
+        onPasswordChanged = {
+            onEvent(AuthenticationEvent.OnPasswordChanged(it))
+        },
         modifier = modifier
     )
 }
