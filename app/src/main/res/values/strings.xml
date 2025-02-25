@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Banking</string>
+    <string name="email_is_not_valid">Email seems incorrect.</string>
+    <string name="password_is_too_short">Password must be at least 12 characters.</string>
+    <string name="user_already_exists">This email is already registered.</string>
+    <string name="unknown_error_occured">Unknown error occurred. Please try again.</string>
+    <string name="login_failed">Email or password is incorrect.</string>
+    <string name="verification_required">Account not confirmed. We\'ve sent a new verification email.</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="log_in">Log in</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="verify_email">Verify email</string>
+    <string name="weve_sent_email">We\'ve sent a verification code to</string>
 </resources>
