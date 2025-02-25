@@ -6,4 +6,5 @@ object ApiConfig {
     const val LOGIN_ENDPOINT = "$BASE_URL/login"
     const val ACCOUNT_ENDPOINT = "$BASE_URL/account"
     const val TRANSACTION_ENDPOINT = "$BASE_URL/transaction"
+    const val VERIFICATION_ENDPOINT = "$BASE_URL/verify"
 }
