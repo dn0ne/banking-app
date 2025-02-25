@@ -43,7 +43,7 @@ class AuthenticationViewModel(
     private fun updateUsername(value: String) {
         _authenticationState.update {
             it.copy(
-                username = value,
+                username = value.trimStart(),
                 usernameError = null
             )
         }
@@ -52,7 +52,7 @@ class AuthenticationViewModel(
     private fun updatePassword(value: String) {
         _authenticationState.update {
             it.copy(
-                password = value,
+                password = value.trimStart(),
                 passwordError = null
             )
         }
@@ -74,8 +74,8 @@ class AuthenticationViewModel(
         }
 
         val user = User(
-            username = _authenticationState.value.username,
-            password = _authenticationState.value.password
+            username = _authenticationState.value.username.trim(),
+            password = _authenticationState.value.password.trim()
         )
 
         if (!validateUser(user)) return
@@ -109,8 +109,8 @@ class AuthenticationViewModel(
         }
 
         val user = User(
-            username = _authenticationState.value.username,
-            password = _authenticationState.value.password
+            username = _authenticationState.value.username.trim(),
+            password = _authenticationState.value.password.trim()
         )
 
         if (!validateUser(user)) return
