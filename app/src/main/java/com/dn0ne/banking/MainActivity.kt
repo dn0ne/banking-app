@@ -4,32 +4,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.dn0ne.banking.presentation.login.WelcomeScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
+import com.dn0ne.banking.presentation.Routes
+import com.dn0ne.banking.presentation.authentication.AuthenticationEvent
+import com.dn0ne.banking.presentation.authentication.AuthenticationState
+import com.dn0ne.banking.presentation.authentication.AuthenticationViewModel
+import com.dn0ne.banking.presentation.authentication.LoginScreen
+import com.dn0ne.banking.presentation.authentication.SignupScreen
+import com.dn0ne.banking.presentation.authentication.VerificationScreen
+import com.dn0ne.banking.presentation.authentication.WelcomeScreen
+import com.dn0ne.banking.presentation.message.ScaffoldWithMessageEvents
 import com.dn0ne.banking.ui.theme.BankingTheme
 import com.dn0ne.banking.ui.theme.DarkBlue
 import com.dn0ne.banking.ui.theme.DarkPurple
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BankingTheme {
-                Scaffold(
+                ScaffoldWithMessageEvents(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
@@ -48,8 +49,88 @@ class MainActivity : ComponentActivity() {
                                 )
                             )
                         )
-                ) { innerPadding ->
+                ) {
+                    val navController = rememberNavController()
 
+                    NavHost(
+                        navController = navController,
+                        startDestination = Routes.Authentication
+                    ) {
+                        navigation<Routes.Authentication>(
+                            startDestination = Routes.Authentication.Welcome
+                        ) {
+                            val viewModel by viewModel<AuthenticationViewModel>()
+
+                            composable<Routes.Authentication.Welcome> {
+                                WelcomeScreen(
+                                    onLoginClick = {
+                                        viewModel.onEvent(AuthenticationEvent.OnLoginClick)
+                                        navController.navigate(Routes.Authentication.Login)
+                                    },
+                                    onSignupClick = {
+                                        viewModel.onEvent(AuthenticationEvent.OnSignupClick)
+                                        navController.navigate(Routes.Authentication.Signup)
+                                    },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+
+                            composable<Routes.Authentication.Signup> {
+                                val state by viewModel.authenticationState.collectAsState()
+                                SignupScreen(
+                                    state = state,
+                                    onEvent = viewModel::onEvent,
+                                    onLoginClick = {
+                                        viewModel.onEvent(AuthenticationEvent.OnLoginClick)
+                                        navController.navigate(Routes.Authentication.Login) {
+                                            popUpTo(Routes.Authentication.Welcome) {
+                                                inclusive = false
+                                            }
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+
+                            composable<Routes.Authentication.Login> {
+                                val state by viewModel.authenticationState.collectAsState()
+                                LoginScreen(
+                                    state = state,
+                                    onEvent = viewModel::onEvent,
+                                    onSignupClick = {
+                                        viewModel.onEvent(AuthenticationEvent.OnSignupClick)
+                                        navController.navigate(Routes.Authentication.Signup) {
+                                            popUpTo(Routes.Authentication.Welcome) {
+                                                inclusive = false
+                                            }
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+
+                            composable<Routes.Authentication.Verification> {
+                                val state by viewModel.authenticationState.collectAsState()
+                                VerificationScreen(
+                                    state = state,
+                                    onEvent = viewModel::onEvent,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+
+                        navigation<Routes.Main>(
+                            startDestination = Routes.Main.Home
+                        ) {
+                            composable<Routes.Main.Home> {
+                                TODO()
+                            }
+
+                            composable<Routes.Main.Transfers> {
+                                TODO()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -72,69 +153,13 @@ fun Preview(modifier: Modifier = Modifier) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        WelcomeScreen({}, {}, Modifier.fillMaxSize())
-    }
-}
-
-
-
-
-
-@Composable
-fun Logo(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            Bubble(
-                modifier = Modifier.matchParentSize()
-            )
-
-            Text(
-                text = "Bank",
-                style = MaterialTheme.typography.displayLarge,
-                color = Color.White,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-
-        Text(
-            text = "App",
-            style = MaterialTheme.typography.displayLarge,
-            color = Color.White,
+        val state = AuthenticationState(
+            username = "test@mail.com"
         )
-    }
-}
-
-@Composable
-fun Bubble(
-    modifier: Modifier = Modifier,
-    imageOffset: Int = 0
-) {
-    Box(
-        modifier = modifier
-            .aspectRatio(1f)
-            .shadow(
-                8.dp,
-                shape = CircleShape,
-            )
-            .clip(CircleShape)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.gradient),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            alignment = when (imageOffset % 3) {
-                0 -> Alignment.Center
-                1 -> Alignment.CenterStart
-                else -> Alignment.CenterEnd
-            },
-            modifier = Modifier
-                .matchParentSize()
+        VerificationScreen(
+            state = state,
+            onEvent = {},
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
