@@ -6,6 +6,7 @@ sealed interface DataError : Error {
         VerificationRequired,
         LoginFailed,
         Forbidden,
+        WrongVerificationCode,
         Unknown,
 
         InternalServerError

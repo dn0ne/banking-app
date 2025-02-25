@@ -46,6 +46,19 @@ class UserService(
                 else -> Result.Error(DataError.Network.Unknown)
             }
         }
+
+    suspend fun verify(code: String): Result<Unit, DataError.Network> =
+        withContext(Dispatchers.IO) {
+            val response = client.post("${ApiConfig.VERIFICATION_ENDPOINT}/$code")
+
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    Result.Success(Unit)
+                }
+                HttpStatusCode.BadRequest -> Result.Error(DataError.Network.WrongVerificationCode)
+                else -> Result.Error(DataError.Network.Unknown)
+            }
+        }
 }
 
 @Serializable
