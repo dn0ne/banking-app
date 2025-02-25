@@ -116,13 +116,13 @@ class AuthenticationViewModel(
         if (!validateUser(user)) return
 
         viewModelScope.launch {
-            when (val loginResult = userService.register(user)) {
+            when (val registerResult = userService.register(user)) {
                 is Result.Success -> {
                     TODO()
                 }
 
                 is Result.Error -> {
-                    val message = when (loginResult.error) {
+                    val message = when (registerResult.error) {
                         DataError.Network.VerificationRequired -> R.string.verification_required
                         DataError.Network.Conflict -> R.string.user_already_exists
                         else -> R.string.unknown_error_occured
