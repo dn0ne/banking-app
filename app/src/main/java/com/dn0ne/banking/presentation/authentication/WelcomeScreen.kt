@@ -1,4 +1,4 @@
-package com.dn0ne.banking.presentation.login
+package com.dn0ne.banking.presentation.authentication
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.dn0ne.banking.Logo
+import com.dn0ne.banking.R
+import com.dn0ne.banking.presentation.components.Logo
 import com.dn0ne.banking.ui.theme.Blue
 import com.dn0ne.banking.ui.theme.BlueDark
 
@@ -48,7 +50,7 @@ fun WelcomeScreen(
                     .height(64.dp)
             ) {
                 Text(
-                    text = "Log in",
+                    text = stringResource(R.string.log_in),
                 )
             }
 
@@ -64,7 +66,7 @@ fun WelcomeScreen(
                     .height(64.dp)
             ) {
                 Text(
-                    text = "Sign up",
+                    text = stringResource(R.string.sign_up),
                 )
             }
         }

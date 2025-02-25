@@ -1,7 +1,9 @@
-package com.dn0ne.banking.presentation.login
+package com.dn0ne.banking.presentation.authentication
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.dn0ne.banking.R
 import com.dn0ne.banking.presentation.components.BaseLoginForm
 
 @Composable
@@ -11,11 +13,10 @@ fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
     BaseLoginForm(
-        title = "Welcome back!",
-        mainButtonText = "Log in",
-        onMainButtonClick = onLoginClick,
-        footerText = "Don't have an account?",
-        footerButtonText = "Sign up",
+        title = stringResource(R.string.welcome_back),
+        mainButtonText = stringResource(R.string.log_in),
+        footerText = stringResource(R.string.dont_have_account),
+        footerButtonText = stringResource(R.string.sign_up),
         onFooterButtonClick = onSignupClick,
         username = "",
         onUsernameChanged = {},
