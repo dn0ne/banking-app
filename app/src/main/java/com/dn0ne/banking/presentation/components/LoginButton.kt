@@ -2,8 +2,10 @@ package com.dn0ne.banking.presentation.components
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ fun LoginButton(
     text: String,
     containerColor: Color,
     contentColor: Color,
+    isLoading: Boolean,
     onClick: () -> Unit
 ) {
     Button(
@@ -29,9 +32,17 @@ fun LoginButton(
         modifier = modifier
             .height(56.dp)
     ) {
-        Text(
-            text = text,
-            modifier = Modifier.padding(4.dp)
-        )
+        if (isLoading) {
+            CircularProgressIndicator(
+                color = contentColor,
+                trackColor = contentColor.copy(alpha = .5f),
+                modifier = Modifier.size(16.dp)
+            )
+        } else {
+            Text(
+                text = text,
+                modifier = Modifier.padding(4.dp)
+            )
+        }
     }
 }

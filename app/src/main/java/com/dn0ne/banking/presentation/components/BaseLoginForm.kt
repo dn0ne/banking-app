@@ -36,6 +36,7 @@ fun BaseLoginForm(
     onUsernameChanged: (String) -> Unit,
     password: String,
     onPasswordChanged: (String) -> Unit,
+    isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -96,6 +97,7 @@ fun BaseLoginForm(
                 onClick = onMainButtonClick,
                 containerColor = BlueDarker,
                 contentColor = Color.White,
+                isLoading = isLoading,
                 modifier = Modifier.fillMaxWidth()
             )
 

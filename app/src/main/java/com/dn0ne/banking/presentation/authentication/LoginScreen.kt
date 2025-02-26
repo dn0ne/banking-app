@@ -30,6 +30,7 @@ fun LoginScreen(
         onPasswordChanged = {
             onEvent(AuthenticationEvent.OnPasswordChanged(it))
         },
+        isLoading = state.isLoading,
         modifier = modifier
     )
 }
