@@ -15,6 +15,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.ConnectException
 
 class AccountService(
     private val client: HttpClient
@@ -22,8 +23,12 @@ class AccountService(
 
     suspend fun openAccount(token: String): Result<Unit, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.post("${ApiConfig.ACCOUNT_ENDPOINT}/open") {
-                header(HttpHeaders.Authorization, "Bearer $token")
+            val response = try {
+                client.post("${ApiConfig.ACCOUNT_ENDPOINT}/open") {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -41,8 +46,12 @@ class AccountService(
 
     suspend fun getAccounts(token: String): Result<List<Account>, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.get(ApiConfig.ACCOUNT_ENDPOINT) {
-                header(HttpHeaders.Authorization, "Bearer $token")
+            val response = try {
+                client.get(ApiConfig.ACCOUNT_ENDPOINT) {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -61,8 +70,12 @@ class AccountService(
         withContext(Dispatchers.IO) {
             if (!account.isActive) return@withContext Result.Error(DataError.Network.Conflict)
 
-            val response = client.post("${ApiConfig.ACCOUNT_ENDPOINT}/close/${account.id}") {
-                header(HttpHeaders.Authorization, "Bearer $token")
+            val response = try {
+                client.post("${ApiConfig.ACCOUNT_ENDPOINT}/close/${account.id}") {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -82,8 +95,12 @@ class AccountService(
         withContext(Dispatchers.IO) {
             if (account.isActive) return@withContext Result.Error(DataError.Network.Conflict)
 
-            val response = client.post("${ApiConfig.ACCOUNT_ENDPOINT}/reopen/${account.id}") {
-                header(HttpHeaders.Authorization, "Bearer $token")
+            val response = try {
+                client.post("${ApiConfig.ACCOUNT_ENDPOINT}/reopen/${account.id}") {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {

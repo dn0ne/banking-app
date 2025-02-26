@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import java.net.ConnectException
 
 class TransactionService(
     private val client: HttpClient
@@ -31,8 +32,12 @@ class TransactionService(
         account: Account
     ): Result<List<Transaction>, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.get("${ApiConfig.TRANSACTION_ENDPOINT}/${account.id}") {
-                header(HttpHeaders.Authorization, "Bearer $token")
+            val response = try {
+                client.get("${ApiConfig.TRANSACTION_ENDPOINT}/${account.id}") {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -43,6 +48,7 @@ class TransactionService(
 
                     Result.Success(transactions)
                 }
+
                 HttpStatusCode.Forbidden -> Result.Error(DataError.Network.Forbidden)
                 else -> Result.Error(DataError.Network.Unknown)
             }
@@ -58,16 +64,20 @@ class TransactionService(
             if ((fromAccountId == null && toAccountId == null) || amount <= 0)
                 return@withContext Result.Error(DataError.Transaction.BadTransaction)
 
-            val response = client.post(ApiConfig.TRANSACTION_ENDPOINT) {
-                header(HttpHeaders.Authorization, "Bearer $token")
-                contentType(ContentType.Application.Json)
-                setBody(
-                    TransactionRequest(
-                        fromAccountId = fromAccountId,
-                        toAccountId = toAccountId,
-                        amount = amount
+            val response = try {
+                client.post(ApiConfig.TRANSACTION_ENDPOINT) {
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                    contentType(ContentType.Application.Json)
+                    setBody(
+                        TransactionRequest(
+                            fromAccountId = fromAccountId,
+                            toAccountId = toAccountId,
+                            amount = amount
+                        )
                     )
-                )
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
 
@@ -80,6 +90,7 @@ class TransactionService(
                     Log.d("TransactionService", "Failed to process transaction: ${error.error}")
                     Result.Error(DataError.Transaction.valueOf(error.error))
                 }
+
                 else -> Result.Error(DataError.Network.Unknown)
             }
         }

@@ -14,6 +14,7 @@ import io.ktor.http.contentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
+import java.net.ConnectException
 
 class UserService(
     private val client: HttpClient
@@ -21,9 +22,13 @@ class UserService(
 
     suspend fun register(user: User): Result<Unit, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.post(ApiConfig.REGISTER_ENDPOINT) {
-                contentType(ContentType.Application.Json)
-                setBody(user)
+            val response = try {
+                client.post(ApiConfig.REGISTER_ENDPOINT) {
+                    contentType(ContentType.Application.Json)
+                    setBody(user)
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -36,9 +41,13 @@ class UserService(
 
     suspend fun login(user: User): Result<String, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.post(ApiConfig.LOGIN_ENDPOINT) {
-                contentType(ContentType.Application.Json)
-                setBody(user)
+            val response = try {
+                client.post(ApiConfig.LOGIN_ENDPOINT) {
+                    contentType(ContentType.Application.Json)
+                    setBody(user)
+                }
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
             }
 
             when (response.status) {
@@ -46,6 +55,7 @@ class UserService(
                     val token = response.body<TokenDto>()
                     Result.Success(token.token)
                 }
+
                 HttpStatusCode.Unauthorized -> Result.Error(DataError.Network.LoginFailed)
                 else -> Result.Error(DataError.Network.Unknown)
             }
@@ -53,12 +63,17 @@ class UserService(
 
     suspend fun verify(code: String): Result<Unit, DataError.Network> =
         withContext(Dispatchers.IO) {
-            val response = client.post("${ApiConfig.VERIFICATION_ENDPOINT}/$code")
+            val response = try {
+                client.post("${ApiConfig.VERIFICATION_ENDPOINT}/$code")
+            } catch (e: ConnectException) {
+                return@withContext Result.Error(DataError.Network.NoInternet)
+            }
 
             when (response.status) {
                 HttpStatusCode.OK -> {
                     Result.Success(Unit)
                 }
+
                 HttpStatusCode.BadRequest -> Result.Error(DataError.Network.WrongVerificationCode)
                 else -> Result.Error(DataError.Network.Unknown)
             }
