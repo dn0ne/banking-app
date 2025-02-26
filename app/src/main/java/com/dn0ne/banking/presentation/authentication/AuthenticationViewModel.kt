@@ -10,8 +10,11 @@ import com.dn0ne.banking.domain.result.DataError
 import com.dn0ne.banking.domain.result.Result
 import com.dn0ne.banking.presentation.message.MessageController
 import com.dn0ne.banking.presentation.message.MessageEvent
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,6 +24,10 @@ class AuthenticationViewModel(
 
     private val _authenticationState = MutableStateFlow(AuthenticationState())
     val authenticationState = _authenticationState.asStateFlow()
+
+    private val _apiEvents = Channel<ApiEvent>()
+    val apiEvents: Flow<ApiEvent>
+        get() = _apiEvents.receiveAsFlow()
 
     fun onEvent(event: AuthenticationEvent) {
         when (event) {
@@ -61,8 +68,12 @@ class AuthenticationViewModel(
     private fun updateVerificationCode(value: String) {
         _authenticationState.update {
             it.copy(
-                verificationCode = value
+                verificationCode = value.filter { char -> char.isDigit() }
             )
+        }
+
+        if (_authenticationState.value.verificationCode.length == 6) {
+            verify()
         }
     }
 
@@ -82,7 +93,7 @@ class AuthenticationViewModel(
 
         viewModelScope.launch {
             when (val loginResult = userService.login(user)) {
-                is Result.Success -> TODO()
+                is Result.Success -> _apiEvents.send(ApiEvent.LoggedIn)
                 is Result.Error -> {
                     val message = when (loginResult.error) {
                         DataError.Network.LoginFailed -> R.string.login_failed
@@ -117,14 +128,46 @@ class AuthenticationViewModel(
 
         viewModelScope.launch {
             when (val registerResult = userService.register(user)) {
-                is Result.Success -> {
-                    TODO()
-                }
-
+                is Result.Success -> _apiEvents.send(ApiEvent.Registered)
                 is Result.Error -> {
                     val message = when (registerResult.error) {
                         DataError.Network.VerificationRequired -> R.string.verification_required
                         DataError.Network.Conflict -> R.string.user_already_exists
+                        else -> R.string.unknown_error_occured
+                    }
+
+                    MessageController.sendEvent(MessageEvent(message))
+                }
+            }
+
+            _authenticationState.update {
+                it.copy(
+                    isLoading = false
+                )
+            }
+        }
+    }
+
+    private fun verify() {
+        viewModelScope.launch {
+            _authenticationState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+
+            val code = _authenticationState.value.verificationCode
+            when (val verificationResult = userService.verify(code)) {
+                is Result.Success -> _apiEvents.send(ApiEvent.Verified)
+                is Result.Error -> {
+                    _authenticationState.update {
+                        it.copy(
+                            verificationCode = ""
+                        )
+                    }
+                    
+                    val message = when (verificationResult.error) {
+                        DataError.Network.WrongVerificationCode -> R.string.verification_code_incorrect
                         else -> R.string.unknown_error_occured
                     }
 
