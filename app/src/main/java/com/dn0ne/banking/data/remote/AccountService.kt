@@ -8,6 +8,7 @@ import com.dn0ne.banking.domain.result.DataError
 import com.dn0ne.banking.domain.result.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -27,6 +28,8 @@ class AccountService(
                 client.post("${ApiConfig.ACCOUNT_ENDPOINT}/open") {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -50,6 +53,8 @@ class AccountService(
                 client.get(ApiConfig.ACCOUNT_ENDPOINT) {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -74,6 +79,8 @@ class AccountService(
                 client.post("${ApiConfig.ACCOUNT_ENDPOINT}/close/${account.id}") {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -99,6 +106,8 @@ class AccountService(
                 client.post("${ApiConfig.ACCOUNT_ENDPOINT}/reopen/${account.id}") {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }

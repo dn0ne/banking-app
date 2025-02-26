@@ -1,11 +1,13 @@
 package com.dn0ne.banking.data.remote
 
+import android.util.Log
 import com.dn0ne.banking.data.ApiConfig
 import com.dn0ne.banking.domain.User
 import com.dn0ne.banking.domain.result.DataError
 import com.dn0ne.banking.domain.result.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -27,6 +29,8 @@ class UserService(
                     contentType(ContentType.Application.Json)
                     setBody(user)
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -46,6 +50,8 @@ class UserService(
                     contentType(ContentType.Application.Json)
                     setBody(user)
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -57,7 +63,10 @@ class UserService(
                 }
 
                 HttpStatusCode.Unauthorized -> Result.Error(DataError.Network.LoginFailed)
-                else -> Result.Error(DataError.Network.Unknown)
+                else -> {
+                    Log.e("UserService", "Unknown error: ${response.status}")
+                    Result.Error(DataError.Network.Unknown)
+                }
             }
         }
 
@@ -65,6 +74,8 @@ class UserService(
         withContext(Dispatchers.IO) {
             val response = try {
                 client.post("${ApiConfig.VERIFICATION_ENDPOINT}/$code")
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }

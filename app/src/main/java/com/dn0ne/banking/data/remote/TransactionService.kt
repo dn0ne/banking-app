@@ -9,6 +9,7 @@ import com.dn0ne.banking.domain.result.DataError
 import com.dn0ne.banking.domain.result.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -36,6 +37,8 @@ class TransactionService(
                 client.get("${ApiConfig.TRANSACTION_ENDPOINT}/${account.id}") {
                     header(HttpHeaders.Authorization, "Bearer $token")
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
@@ -76,6 +79,8 @@ class TransactionService(
                         )
                     )
                 }
+            } catch (e: HttpRequestTimeoutException) {
+                return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
                 return@withContext Result.Error(DataError.Network.NoInternet)
             }
