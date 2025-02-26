@@ -8,7 +8,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -20,6 +22,7 @@ class UserService(
     suspend fun register(user: User): Result<Unit, DataError.Network> =
         withContext(Dispatchers.IO) {
             val response = client.post(ApiConfig.REGISTER_ENDPOINT) {
+                contentType(ContentType.Application.Json)
                 setBody(user)
             }
 
@@ -34,6 +37,7 @@ class UserService(
     suspend fun login(user: User): Result<String, DataError.Network> =
         withContext(Dispatchers.IO) {
             val response = client.post(ApiConfig.LOGIN_ENDPOINT) {
+                contentType(ContentType.Application.Json)
                 setBody(user)
             }
 
