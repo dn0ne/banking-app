@@ -14,4 +14,6 @@
     <string name="verify_email">Verify email</string>
     <string name="weve_sent_email">We\'ve sent a verification code to</string>
     <string name="verification_code_incorrect">Verification code is incorrect.</string>
+    <string name="account_verified">Account verified</string>
+    <string name="account_verified_supporting_text">Your account has been successfully verified. You can now log in and start using the app.</string>
 </resources>
