@@ -23,10 +23,12 @@ fun SignupScreen(
         footerButtonText = stringResource(R.string.log_in),
         onFooterButtonClick = onLoginClick,
         username = state.username,
+        usernameError = state.usernameError?.let { stringResource(it) },
         onUsernameChanged = {
             onEvent(AuthenticationEvent.OnUsernameChanged(it))
         },
         password = state.password,
+        passwordError = state.passwordError?.let { stringResource(it) },
         onPasswordChanged = {
             onEvent(AuthenticationEvent.OnPasswordChanged(it))
         },
