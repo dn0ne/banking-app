@@ -51,13 +51,13 @@ fun BaseLoginForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
-                .background(color = Color.White.copy(alpha = .9f))
+                .background(color = MaterialTheme.colorScheme.surface.copy(alpha = .9f))
                 .padding(24.dp),
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.displaySmall,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
 
@@ -105,8 +105,8 @@ fun BaseLoginForm(
             LoginButton(
                 text = mainButtonText,
                 onClick = onMainButtonClick,
-                containerColor = BlueDarker,
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 isLoading = isLoading,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -118,14 +118,14 @@ fun BaseLoginForm(
             ) {
                 Text(
                     text = footerText,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
                     text = footerButtonText,
-                    color = BlueDarker,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.clickable {
                         onFooterButtonClick()

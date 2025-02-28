@@ -45,13 +45,15 @@ fun CodeTextField(
                     Text(
                         text = char,
                         style = MaterialTheme.typography.headlineMedium,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .width(36.dp)
                             .border(
                                 width = if (isFocused) 2.dp else 1.dp,
-                                color = if (isFocused) Color.Gray else Color.LightGray,
+                                color = if (isFocused) {
+                                    MaterialTheme.colorScheme.primary
+                                } else MaterialTheme.colorScheme.onSurfaceVariant,
                                 shape = MaterialTheme.shapes.small
                             )
                             .padding(4.dp)

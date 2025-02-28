@@ -42,8 +42,8 @@ fun WelcomeScreen(
                 onClick = onLoginClick,
                 shape = MaterialTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue.copy(alpha = .3f),
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = .3f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,8 +58,8 @@ fun WelcomeScreen(
                 onClick = onSignupClick,
                 shape = MaterialTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = BlueDark.copy(alpha = .3f),
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = .3f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

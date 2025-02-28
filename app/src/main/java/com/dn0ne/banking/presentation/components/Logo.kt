@@ -28,7 +28,7 @@ fun Logo(modifier: Modifier = Modifier) {
             Text(
                 text = "Bank",
                 style = MaterialTheme.typography.displayLarge,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -36,7 +36,7 @@ fun Logo(modifier: Modifier = Modifier) {
         Text(
             text = "App",
             style = MaterialTheme.typography.displayLarge,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.surface,
         )
     }
 }

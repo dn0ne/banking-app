@@ -32,14 +32,14 @@ fun MessageBox(
         modifier = modifier
             .shadow(elevation = 10.dp, shape = MaterialTheme.shapes.small)
             .clip(MaterialTheme.shapes.small)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(message.message),
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
 

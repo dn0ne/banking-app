@@ -35,13 +35,13 @@ fun RegisteredScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
-                .background(color = Color.White.copy(alpha = .9f))
+                .background(color = MaterialTheme.colorScheme.surface.copy(alpha = .9f))
                 .padding(24.dp),
         ) {
             Text(
                 text = stringResource(R.string.account_verified),
                 style = MaterialTheme.typography.displaySmall,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
 
@@ -56,8 +56,8 @@ fun RegisteredScreen(
             LoginButton(
                 text = stringResource(R.string.log_in),
                 onClick = onLoginClick,
-                containerColor = BlueDarker,
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 isLoading = false,
                 modifier = Modifier.fillMaxWidth()
             )
