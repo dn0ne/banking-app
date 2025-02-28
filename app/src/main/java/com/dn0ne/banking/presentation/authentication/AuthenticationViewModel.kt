@@ -89,7 +89,14 @@ class AuthenticationViewModel(
             password = _authenticationState.value.password.trim()
         )
 
-        if (!validateUser(user)) return
+        if (!validateUser(user)) {
+            _authenticationState.update {
+                it.copy(
+                    isLoading = false
+                )
+            }
+            return
+        }
 
         viewModelScope.launch {
             when (val loginResult = userService.login(user)) {
@@ -124,7 +131,14 @@ class AuthenticationViewModel(
             password = _authenticationState.value.password.trim()
         )
 
-        if (!validateUser(user)) return
+        if (!validateUser(user)) {
+            _authenticationState.update {
+                it.copy(
+                    isLoading = false
+                )
+            }
+            return
+        }
 
         viewModelScope.launch {
             when (val registerResult = userService.register(user)) {
