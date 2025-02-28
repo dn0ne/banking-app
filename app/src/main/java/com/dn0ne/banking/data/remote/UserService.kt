@@ -70,10 +70,13 @@ class UserService(
             }
         }
 
-    suspend fun verify(code: String): Result<Unit, DataError.Network> =
+    suspend fun verify(code: String, username: String): Result<Unit, DataError.Network> =
         withContext(Dispatchers.IO) {
             val response = try {
-                client.post("${ApiConfig.VERIFICATION_ENDPOINT}/$code")
+                client.post(ApiConfig.VERIFICATION_ENDPOINT) {
+                    contentType(ContentType.Application.Json)
+                    setBody(VerificationDto(code, username))
+                }
             } catch (e: HttpRequestTimeoutException) {
                 return@withContext Result.Error(DataError.Network.ServerOffline)
             } catch (e: ConnectException) {
@@ -94,4 +97,10 @@ class UserService(
 @Serializable
 private data class TokenDto(
     val token: String
+)
+
+@Serializable
+private data class VerificationDto(
+    val code: String,
+    val username: String
 )
