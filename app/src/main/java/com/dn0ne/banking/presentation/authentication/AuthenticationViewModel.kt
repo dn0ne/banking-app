@@ -104,6 +104,8 @@ class AuthenticationViewModel(
                 is Result.Error -> {
                     val message = when (loginResult.error) {
                         DataError.Network.LoginFailed -> R.string.login_failed
+                        DataError.Network.NoInternet -> R.string.device_offline
+                        DataError.Network.ServerOffline -> R.string.server_offline
                         else -> R.string.unknown_error_occured
                     }
 
@@ -147,6 +149,8 @@ class AuthenticationViewModel(
                     val message = when (registerResult.error) {
                         DataError.Network.VerificationRequired -> R.string.verification_required
                         DataError.Network.Conflict -> R.string.user_already_exists
+                        DataError.Network.NoInternet -> R.string.device_offline
+                        DataError.Network.ServerOffline -> R.string.server_offline
                         else -> R.string.unknown_error_occured
                     }
 
@@ -171,7 +175,8 @@ class AuthenticationViewModel(
             }
 
             val code = _authenticationState.value.verificationCode
-            when (val verificationResult = userService.verify(code)) {
+            val username = _authenticationState.value.username
+            when (val verificationResult = userService.verify(code, username)) {
                 is Result.Success -> _apiEvents.send(ApiEvent.Verified)
                 is Result.Error -> {
                     _authenticationState.update {
@@ -182,6 +187,8 @@ class AuthenticationViewModel(
                     
                     val message = when (verificationResult.error) {
                         DataError.Network.WrongVerificationCode -> R.string.verification_code_incorrect
+                        DataError.Network.NoInternet -> R.string.device_offline
+                        DataError.Network.ServerOffline -> R.string.server_offline
                         else -> R.string.unknown_error_occured
                     }
 
