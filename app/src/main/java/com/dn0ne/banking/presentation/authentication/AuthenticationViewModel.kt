@@ -37,8 +37,8 @@ class AuthenticationViewModel(
             AuthenticationEvent.OnConfirmLoginClick -> login()
             AuthenticationEvent.OnConfirmSignupClick -> register()
 
-            is AuthenticationEvent.OnUsernameChanged -> updatePassword(event.value)
-            is AuthenticationEvent.OnPasswordChanged -> updateUsername(event.value)
+            is AuthenticationEvent.OnUsernameChanged -> updateUsername(event.value)
+            is AuthenticationEvent.OnPasswordChanged -> updatePassword(event.value)
             is AuthenticationEvent.OnVerificationCodeChanged -> updateVerificationCode(event.value)
         }
     }
