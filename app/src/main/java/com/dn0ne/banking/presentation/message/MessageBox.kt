@@ -30,11 +30,10 @@ fun MessageBox(
 ) {
     Row(
         modifier = modifier
-            .padding(16.dp)
             .shadow(elevation = 10.dp, shape = MaterialTheme.shapes.small)
             .clip(MaterialTheme.shapes.small)
             .background(Color.White)
-            .padding(12.dp),
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

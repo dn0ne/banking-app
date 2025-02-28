@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -56,8 +58,8 @@ fun ScaffoldWithMessageEvents(
 
             AnimatedVisibility(
                 visible = showMessage,
-                enter = slideInVertically { -it },
-                exit = slideOutVertically { -it },
+                enter = slideInVertically { it * 2 },
+                exit = slideOutVertically { it * 2 },
                 modifier = Modifier.align(Alignment.BottomCenter)
             ) {
                 val translation = remember {
@@ -67,6 +69,7 @@ fun ScaffoldWithMessageEvents(
                     MessageBox(
                         message = it,
                         modifier = Modifier
+                            .padding(28.dp)
                             .pointerInput(Unit) {
                                 detectDragGestures(
                                     onDrag = { _, dragAmount ->
