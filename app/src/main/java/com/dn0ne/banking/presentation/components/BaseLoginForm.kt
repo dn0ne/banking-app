@@ -33,8 +33,10 @@ fun BaseLoginForm(
     footerButtonText: String,
     onFooterButtonClick: () -> Unit,
     username: String,
+    usernameError: String?,
     onUsernameChanged: (String) -> Unit,
     password: String,
+    passwordError: String?,
     onPasswordChanged: (String) -> Unit,
     isLoading: Boolean,
     modifier: Modifier = Modifier
@@ -73,6 +75,10 @@ fun BaseLoginForm(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email
                 ),
+                isError = usernameError != null,
+                supportingText = {
+                        Text(text = usernameError ?: "")
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -87,6 +93,10 @@ fun BaseLoginForm(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
                 ),
+                isError = passwordError != null,
+                supportingText = {
+                    Text(text = passwordError ?: "")
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
