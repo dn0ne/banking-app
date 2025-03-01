@@ -71,4 +71,7 @@ dependencies {
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.contentNegotiation)
     implementation(libs.ktor.serialization.json)
+
+    implementation(libs.haze)
+    implementation(libs.haze.materials)
 }
