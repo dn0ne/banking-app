@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import com.dn0ne.banking.R
 @Composable
 fun Bubble(
     modifier: Modifier = Modifier,
+    shape: Shape = CircleShape,
     imageOffset: Int = 0
 ) {
     Box(
@@ -24,9 +26,9 @@ fun Bubble(
             .aspectRatio(1f)
             .shadow(
                 8.dp,
-                shape = CircleShape,
+                shape = shape,
             )
-            .clip(CircleShape)
+            .clip(shape)
     ) {
         Image(
             painter = painterResource(R.drawable.gradient),
