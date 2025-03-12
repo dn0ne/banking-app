@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dn0ne.banking.R
-import com.dn0ne.banking.presentation.components.LoginButton
+import com.dn0ne.banking.presentation.components.BankingButton
 
 @Composable
 fun RegisteredScreen(
@@ -51,7 +51,7 @@ fun RegisteredScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            LoginButton(
+            BankingButton(
                 text = stringResource(R.string.log_in),
                 onClick = onLoginClick,
                 containerColor = MaterialTheme.colorScheme.primary,

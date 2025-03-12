@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoginButton(
+fun BankingButton(
     modifier: Modifier = Modifier,
     text: String,
     containerColor: Color,

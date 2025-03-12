@@ -100,7 +100,7 @@ fun BaseLoginForm(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            LoginButton(
+            BankingButton(
                 text = mainButtonText,
                 onClick = onMainButtonClick,
                 containerColor = MaterialTheme.colorScheme.primary,
