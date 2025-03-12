@@ -27,11 +27,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dn0ne.banking.LocalHazeState
+import com.dn0ne.banking.LocalLightHazeStyle
 import com.dn0ne.banking.R
 import com.dn0ne.banking.domain.Account
 import com.dn0ne.banking.domain.Transaction
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 
 @Composable
@@ -44,11 +43,7 @@ fun DetailsSheet(
     onReopenAccountClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val hazeStyle = HazeStyle(
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        tint = HazeTint(color = MaterialTheme.colorScheme.surface.copy(.85f)),
-        blurRadius = 20.dp
-    )
+
     Column(
         modifier = modifier
             .clip(
@@ -57,7 +52,7 @@ fun DetailsSheet(
                     topEnd = 16.dp
                 )
             )
-            .hazeEffect(LocalHazeState.current, hazeStyle)
+            .hazeEffect(LocalHazeState.current, LocalLightHazeStyle.current)
             .padding(16.dp)
     ) {
         Text(

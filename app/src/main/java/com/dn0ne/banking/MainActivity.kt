@@ -37,6 +37,22 @@ import com.dn0ne.banking.ui.theme.DarkBlue
 import com.dn0ne.banking.ui.theme.DarkPurple
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+val LocalHazeState = compositionLocalOf { HazeState() }
+val LocalLightHazeStyle = compositionLocalOf {
+    HazeStyle(
+        backgroundColor = Color.White,
+        tint = HazeTint(color = Color.White.copy(.85f)),
+        blurRadius = 20.dp
+    )
+}
+val LocalDarkHazeStyle = compositionLocalOf {
+    HazeStyle(
+        backgroundColor = Color.Black,
+        tint = HazeTint(color = Color.Black.copy(.15f)),
+        blurRadius = 20.dp
+    )
+}
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

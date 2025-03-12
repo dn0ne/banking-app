@@ -19,11 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dn0ne.banking.LocalDarkHazeStyle
 import com.dn0ne.banking.LocalHazeState
 import com.dn0ne.banking.R
 import com.dn0ne.banking.domain.Account
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 
 @Composable
@@ -31,11 +30,6 @@ fun CreditCard(
     account: Account,
     modifier: Modifier = Modifier
 ) {
-    val hazeStyle = HazeStyle(
-        backgroundColor = MaterialTheme.colorScheme.onSurface,
-        tint = HazeTint(color = MaterialTheme.colorScheme.inverseOnSurface.copy(.15f)),
-        blurRadius = 20.dp
-    )
     Column(
         modifier = modifier
             .aspectRatio(1.55f)
@@ -47,7 +41,7 @@ fun CreditCard(
             .clip(MaterialTheme.shapes.large)
             .hazeEffect(
                 state = LocalHazeState.current,
-                style = hazeStyle
+                style = LocalDarkHazeStyle.current
             )
             .alpha(
                 if (account.isActive && account.id.isNotBlank()) 1f else .5f

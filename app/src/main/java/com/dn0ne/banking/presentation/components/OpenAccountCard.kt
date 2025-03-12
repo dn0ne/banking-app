@@ -19,10 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dn0ne.banking.LocalDarkHazeStyle
 import com.dn0ne.banking.LocalHazeState
 import com.dn0ne.banking.R
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 
 @Composable
@@ -30,11 +29,6 @@ fun OpenAccountCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val hazeStyle = HazeStyle(
-        backgroundColor = MaterialTheme.colorScheme.onSurface,
-        tint = HazeTint(color = MaterialTheme.colorScheme.inverseOnSurface.copy(.15f)),
-        blurRadius = 20.dp
-    )
     Column(
         modifier = modifier
             .aspectRatio(1.55f)
@@ -47,7 +41,7 @@ fun OpenAccountCard(
             .clickable(onClick = onClick)
             .hazeEffect(
                 state = LocalHazeState.current,
-                style = hazeStyle
+                style = LocalDarkHazeStyle.current
             ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
