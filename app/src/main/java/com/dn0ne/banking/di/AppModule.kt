@@ -1,9 +1,10 @@
 package com.dn0ne.banking.di
 
-import com.dn0ne.banking.data.remote.UserService
 import com.dn0ne.banking.data.remote.AccountService
 import com.dn0ne.banking.data.remote.TransactionService
+import com.dn0ne.banking.data.remote.UserService
 import com.dn0ne.banking.presentation.authentication.AuthenticationViewModel
+import com.dn0ne.banking.presentation.main.BankingViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
@@ -21,7 +22,7 @@ val appModule = module {
             }
 
             install(HttpTimeout) {
-                requestTimeoutMillis = 5_000
+                requestTimeoutMillis = 10_000
             }
         }
     }
@@ -31,4 +32,5 @@ val appModule = module {
     singleOf(::TransactionService)
 
     viewModelOf(::AuthenticationViewModel)
+    viewModelOf(::BankingViewModel)
 }

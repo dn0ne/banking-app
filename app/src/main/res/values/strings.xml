@@ -18,4 +18,20 @@
     <string name="account_verified_supporting_text">Your account has been successfully verified. You can now log in and start using the app.</string>
     <string name="device_offline">Looks like you\'re offline. Please connect to the internet and try again.</string>
     <string name="server_offline">Our servers are offline. Please try again later.</string>
+    <string name="cards">Cards</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="details">Details</string>
+    <string name="see">See</string>
+    <string name="transactions_history">Transactions history</string>
+    <string name="my_cards">My cards</string>
+    <string name="transfers">Transfers</string>
+    <string name="profile">Profile</string>
+    <string name="full_history">Full history</string>
+    <string name="close_account">Close account</string>
+    <string name="reopen_account">Reopen account</string>
+    <string name="open_account">Open account</string>
+    <string name="closed">Closed</string>
+    <string name="server_error">Internal server error occured</string>
+    <string name="your_transactions_will_appear_here">Your transactions will appear here.</string>
+    <string name="your_account_details_will_appear_here">After opening an account, details will appear here.</string>
 </resources>

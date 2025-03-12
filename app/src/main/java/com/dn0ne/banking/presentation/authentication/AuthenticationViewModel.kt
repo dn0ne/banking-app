@@ -29,6 +29,9 @@ class AuthenticationViewModel(
     val apiEvents: Flow<ApiEvent>
         get() = _apiEvents.receiveAsFlow()
 
+    var receivedToken: String? = null
+        private set
+
     fun onEvent(event: AuthenticationEvent) {
         when (event) {
             AuthenticationEvent.OnLoginClick -> resetState()
@@ -50,7 +53,8 @@ class AuthenticationViewModel(
     private fun updateUsername(value: String) {
         _authenticationState.update {
             it.copy(
-                username = value.trimStart(),
+                username = value.trimStart()
+                    .filter { char -> !char.isWhitespace() && char != '\t' },
                 usernameError = null
             )
         }
@@ -59,7 +63,8 @@ class AuthenticationViewModel(
     private fun updatePassword(value: String) {
         _authenticationState.update {
             it.copy(
-                password = value.trimStart(),
+                password = value.trimStart()
+                    .filter { char -> !char.isWhitespace() && char != '\t' },
                 passwordError = null
             )
         }
@@ -100,7 +105,11 @@ class AuthenticationViewModel(
 
         viewModelScope.launch {
             when (val loginResult = userService.login(user)) {
-                is Result.Success -> _apiEvents.send(ApiEvent.LoggedIn)
+                is Result.Success -> {
+                    receivedToken = loginResult.data
+                    _apiEvents.send(ApiEvent.LoggedIn)
+                }
+
                 is Result.Error -> {
                     val message = when (loginResult.error) {
                         DataError.Network.LoginFailed -> R.string.login_failed
@@ -147,7 +156,11 @@ class AuthenticationViewModel(
                 is Result.Success -> _apiEvents.send(ApiEvent.Registered)
                 is Result.Error -> {
                     val message = when (registerResult.error) {
-                        DataError.Network.VerificationRequired -> R.string.verification_required
+                        DataError.Network.VerificationRequired -> {
+                            _apiEvents.send(ApiEvent.Registered)
+                            R.string.verification_required
+                        }
+
                         DataError.Network.Conflict -> R.string.user_already_exists
                         DataError.Network.NoInternet -> R.string.device_offline
                         DataError.Network.ServerOffline -> R.string.server_offline
@@ -184,7 +197,7 @@ class AuthenticationViewModel(
                             verificationCode = ""
                         )
                     }
-                    
+
                     val message = when (verificationResult.error) {
                         DataError.Network.WrongVerificationCode -> R.string.verification_code_incorrect
                         DataError.Network.NoInternet -> R.string.device_offline
