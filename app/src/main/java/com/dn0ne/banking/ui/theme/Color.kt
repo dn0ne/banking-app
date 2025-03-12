@@ -8,3 +8,6 @@ val BlueDark = Color(0xFF5F5791)
 
 val DarkBlue = Color(0xFF213048)
 val DarkPurple = Color(0xFF432148)
+
+val Red = Color(0xFFEB5757)
+val Green = Color(0xFF27AE60)
