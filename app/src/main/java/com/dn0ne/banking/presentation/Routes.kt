@@ -23,7 +23,7 @@ sealed interface Routes {
     }
 
     @Serializable
-    data object Main : Routes {
+    data class Main(val token: String) : Routes {
         @Serializable
         data object Home
 
