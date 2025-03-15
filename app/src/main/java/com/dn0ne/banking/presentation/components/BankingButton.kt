@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BankingButton(
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     text: String,
     containerColor: Color,
     contentColor: Color,
@@ -26,9 +27,12 @@ fun BankingButton(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
-            contentColor = contentColor
+            contentColor = contentColor,
+            disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledContentColor = MaterialTheme.colorScheme.inverseOnSurface
         ),
         shape = MaterialTheme.shapes.extraSmall,
+        enabled = isEnabled,
         modifier = modifier
             .height(56.dp)
     ) {
