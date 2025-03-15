@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material3.HorizontalDivider
@@ -41,6 +43,8 @@ fun DetailsSheet(
     transactions: List<Transaction>,
     onCloseAccountClick: () -> Unit,
     onReopenAccountClick: () -> Unit,
+    onDepositClick: () -> Unit,
+    onWithdrawClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -157,6 +161,24 @@ fun DetailsSheet(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+
+            HorizontalDivider(Modifier.padding(start = 48.dp))
+
+            DetailsButton(
+                icon = Icons.Outlined.AccountBalance,
+                text = stringResource(R.string.deposit),
+                onClick = onDepositClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            HorizontalDivider(Modifier.padding(start = 48.dp))
+
+            DetailsButton(
+                icon = Icons.Outlined.AccountBalanceWallet,
+                text = stringResource(R.string.withdraw),
+                onClick = onWithdrawClick,
+                modifier = Modifier.fillMaxWidth()
+            )
         } else {
             Text(
                 text = stringResource(R.string.your_account_details_will_appear_here),

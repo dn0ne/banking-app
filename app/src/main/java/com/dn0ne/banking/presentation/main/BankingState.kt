@@ -4,5 +4,9 @@ import com.dn0ne.banking.domain.Account
 import com.dn0ne.banking.domain.Transaction
 
 data class BankingState(
-    val accountsToTransactions: Map<Account, List<Transaction>> = emptyMap()
+    val accountsToTransactions: Map<Account, List<Transaction>> = emptyMap(),
+    val fromAccountId: String = "",
+    val toAccountId: String = "",
+    val amount: String = "",
+    val transferState: TransferState = TransferState.None
 )

@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.dn0ne.banking.R
+import com.dn0ne.banking.presentation.components.BankingAmountDialog
 import com.dn0ne.banking.presentation.components.CardPagerWithBubbles
 import com.dn0ne.banking.presentation.components.DetailsSheet
 import kotlinx.coroutines.launch
@@ -51,9 +52,6 @@ fun HomeScreen(
     ) {
         val accounts = remember(state.accountsToTransactions) {
             state.accountsToTransactions.keys.toList()
-        }
-        LaunchedEffect(accounts) {
-            println(accounts.joinToString())
         }
 
         val pagerState = remember(accounts) {
@@ -133,6 +131,42 @@ fun HomeScreen(
             )
         }
 
+        var showDepositDialog by remember {
+            mutableStateOf(false)
+        }
+
+        if (showDepositDialog) {
+            BankingAmountDialog(
+                title = stringResource(R.string.deposit),
+                onConfirmClick = {
+                    currentAccount?.let { account ->
+                        onEvent(BankingEvent.OnDepositClick(account, it))
+                    }
+                },
+                onDismissRequest = {
+                    showDepositDialog = false
+                }
+            )
+        }
+
+        var showWithdrawDialog by remember {
+            mutableStateOf(false)
+        }
+
+        if (showWithdrawDialog) {
+            BankingAmountDialog(
+                title = stringResource(R.string.withdraw),
+                onConfirmClick = {
+                    currentAccount?.let { account ->
+                        onEvent(BankingEvent.OnWithdrawClick(account, it))
+                    }
+                },
+                onDismissRequest = {
+                    showWithdrawDialog = false
+                }
+            )
+        }
+
         val decay = rememberSplineBasedDecay<Float>()
         val coroutineScope = rememberCoroutineScope()
         val detailsDraggableState = rememberDraggableState { dragAmount ->
@@ -162,6 +196,12 @@ fun HomeScreen(
                 currentAccount?.let {
                     onEvent(BankingEvent.OnReopenAccountClick(it))
                 }
+            },
+            onDepositClick = {
+                showDepositDialog = true
+            },
+            onWithdrawClick = {
+                showWithdrawDialog = true
             },
             modifier = Modifier
                 .fillMaxSize()

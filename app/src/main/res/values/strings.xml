@@ -34,4 +34,21 @@
     <string name="server_error">Internal server error occured</string>
     <string name="your_transactions_will_appear_here">Your transactions will appear here.</string>
     <string name="your_account_details_will_appear_here">After opening an account, details will appear here.</string>
+    <string name="transfer">Transfer</string>
+    <string name="from_account">From account</string>
+    <string name="to_account">To account</string>
+    <string name="account_id">Account ID</string>
+    <string name="amount">Amount</string>
+    <string name="continue_transfer">Continue</string>
+    <string name="account_is_closed">The account you were trying to transfer money to is closed</string>
+    <string name="account_not_found">Recipient\'s account was not found</string>
+    <string name="insufficient_funds">Insufficient funds to make the transfer</string>
+    <string name="transfer_success">Transfer successfully completed</string>
+    <string name="bad_transaction">Incorrect data for transfer</string>
+    <string name="processing_transfer">Processing transfer</string>
+    <string name="back">Back</string>
+    <string name="deposit">Deposit</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>
