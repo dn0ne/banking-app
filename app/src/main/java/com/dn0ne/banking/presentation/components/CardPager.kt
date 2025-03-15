@@ -53,18 +53,14 @@ fun CardPagerWithBubbles(
             mutableStateOf(IntSize.Zero)
         }
 
-        val pageOffset by remember {
-            derivedStateOf {
-                pagerState.currentPage + pagerState.currentPageOffsetFraction
-            }
+        val pageOffset = remember(pagerState.currentPage + pagerState.currentPageOffsetFraction) {
+            pagerState.currentPage + pagerState.currentPageOffsetFraction
         }
-        val progress by remember {
-            derivedStateOf {
-                if (pageOffset.toInt() % 2 == 0) {
-                    pageOffset % 2
-                } else {
-                    2 - pageOffset % 2
-                }
+        val progress = remember(pageOffset) {
+            if (pageOffset.toInt() % 2 == 0) {
+                pageOffset % 2
+            } else {
+                2 - pageOffset % 2
             }
         }
 
