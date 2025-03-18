@@ -23,11 +23,14 @@ sealed interface Routes {
     }
 
     @Serializable
-    data class Main(val token: String) : Routes {
+    data class Main(val token: String, val username: String) : Routes {
         @Serializable
         data object Home
 
         @Serializable
         data object Transfers
+
+        @Serializable
+        data object Profile
     }
 }

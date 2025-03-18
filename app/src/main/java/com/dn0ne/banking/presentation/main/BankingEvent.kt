@@ -13,4 +13,6 @@ sealed interface BankingEvent {
     data class OnFromAccountIdChange(val account: Account) : BankingEvent
     data class OnToAccountIdChange(val value: String) : BankingEvent
     data class OnAmountChange(val value: String) : BankingEvent
+
+    data object OnLogoutClick : BankingEvent
 }

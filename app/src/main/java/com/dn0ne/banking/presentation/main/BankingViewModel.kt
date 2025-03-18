@@ -38,6 +38,8 @@ class BankingViewModel(
             is BankingEvent.OnToAccountIdChange -> updateToAccountId(event.value)
             is BankingEvent.OnAmountChange -> updateAmount(event.value)
             BankingEvent.OnConfirmTransfer -> processTransaction()
+
+            BankingEvent.OnLogoutClick -> reset()
         }
     }
 
@@ -278,5 +280,18 @@ class BankingViewModel(
     fun setToken(token: String) {
         this.token = token
         refreshData()
+    }
+
+    fun setUsername(username: String) {
+        _bankingState.update {
+            it.copy(
+                username = username
+            )
+        }
+    }
+
+    private fun reset() {
+        token = null
+        _bankingState.update { BankingState() }
     }
 }

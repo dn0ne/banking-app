@@ -1,6 +1,7 @@
 package com.dn0ne.banking
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -49,8 +50,10 @@ import com.dn0ne.banking.presentation.authentication.VerificationScreen
 import com.dn0ne.banking.presentation.authentication.WelcomeScreen
 import com.dn0ne.banking.presentation.components.BottomNavbar
 import com.dn0ne.banking.presentation.components.NavbarDestination
+import com.dn0ne.banking.presentation.main.BankingEvent
 import com.dn0ne.banking.presentation.main.BankingViewModel
 import com.dn0ne.banking.presentation.main.HomeScreen
+import com.dn0ne.banking.presentation.main.ProfileScreen
 import com.dn0ne.banking.presentation.main.TransfersScreen
 import com.dn0ne.banking.presentation.message.ObserveAsEvents
 import com.dn0ne.banking.presentation.message.ScaffoldWithMessageEvents
@@ -61,6 +64,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeSource
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 val LocalHazeState = compositionLocalOf { HazeState() }
@@ -203,7 +207,7 @@ class MainActivity : ComponentActivity() {
                                     ObserveAsEvents(viewModel.apiEvents) { event ->
                                         if (event == ApiEvent.LoggedIn) {
                                             viewModel.receivedToken?.let {
-                                                navController.navigate(Routes.Main(it)) {
+                                                navController.navigate(Routes.Main(it, state.username)) {
                                                     popUpTo(Routes.Authentication) {
                                                         inclusive = true
                                                     }
@@ -252,11 +256,12 @@ class MainActivity : ComponentActivity() {
                                 val viewModel by viewModel<BankingViewModel>()
 
                                 composable<Routes.Main.Home> {
-                                    val token = navController
+                                    val (token, username) = navController
                                         .getBackStackEntry<Routes.Main>()
                                         .toRoute<Routes.Main>()
-                                        .token
+                                        .let { it.token to it.username }
                                     viewModel.setToken(token)
+                                    viewModel.setUsername(username)
 
                                     val bankingState by viewModel.bankingState.collectAsState()
                                     HomeScreen(
@@ -274,6 +279,22 @@ class MainActivity : ComponentActivity() {
                                         modifier = Modifier.fillMaxSize()
                                     )
                                 }
+
+                                composable<Routes.Main.Profile> {
+                                    val bankingState by viewModel.bankingState.collectAsState()
+                                    ProfileScreen(
+                                        state = bankingState,
+                                        onLogoutClick = {
+                                            navController.navigate(Routes.Authentication) {
+                                                popUpTo(Routes.Main.Home) {
+                                                    inclusive = true
+                                                }
+                                            }
+                                            viewModel.onEvent(BankingEvent.OnLogoutClick)
+                                        },
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                }
                             }
                         }
 
@@ -287,6 +308,7 @@ class MainActivity : ComponentActivity() {
                             derivedStateOf {
                                 when {
                                     currentBackStackEntry?.destination?.hasRoute(Routes.Main.Transfers::class) == true -> 1
+                                    currentBackStackEntry?.destination?.hasRoute(Routes.Main.Profile::class) == true -> 2
                                     else -> 0
                                 }
                             }
@@ -312,9 +334,17 @@ class MainActivity : ComponentActivity() {
                                     label = stringResource(R.string.transfers),
                                     icon = Icons.Outlined.Payments,
                                     onClick = {
-                                        navController.navigate(Routes.Main.Transfers) {
-                                            popUpTo(Routes.Main.Home)
-                                            launchSingleTop = true
+                                        if (getViewModel<BankingViewModel>().bankingState.value.accountsToTransactions.isNotEmpty()) {
+                                            navController.navigate(Routes.Main.Transfers) {
+                                                popUpTo(Routes.Main.Home)
+                                                launchSingleTop = true
+                                            }
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                R.string.no_accounts,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 ),
@@ -322,6 +352,10 @@ class MainActivity : ComponentActivity() {
                                     label = stringResource(R.string.profile),
                                     icon = Icons.Outlined.Person,
                                     onClick = {
+                                        navController.navigate(Routes.Main.Profile) {
+                                            popUpTo(Routes.Main.Home)
+                                            launchSingleTop = true
+                                        }
                                     }
                                 )
                             )

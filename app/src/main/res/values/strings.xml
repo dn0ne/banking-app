@@ -51,4 +51,6 @@
     <string name="withdraw">Withdraw</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="no_accounts">You have no accounts.</string>
+    <string name="log_out">Log out</string>
 </resources>
