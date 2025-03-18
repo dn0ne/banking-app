@@ -34,4 +34,7 @@
    - Wait for the project to sync and build (Gradle sync may take some time).  
    - Ensure a device or emulator is connected.
    - Ensure [banking server](https://github.com/dn0ne/banking-server) is running.
-   - Click the **Run** button or press `Shift + F10` to build and launch the app.  
+   - Click the **Run** button or press `Shift + F10` to build and launch the app.
+
+## Credit
+- [Design template](https://www.figma.com/community/file/967000607649358851) by [Adil Bitlés](https://www.figma.com/@adil)
