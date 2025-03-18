@@ -92,8 +92,14 @@ fun Transaction(
         Column(
             modifier = Modifier.padding(end = 16.dp)
         ) {
+            val description = when {
+                transaction.fromAccountId == "null" -> "Deposit"
+                transaction.toAccountId == "null" -> "Withdraw"
+                isOutgoing -> "To ${transaction.toAccountId}"
+                else -> "From ${transaction.fromAccountId}"
+            }
             Text(
-                text = if (isOutgoing) "To ${transaction.toAccountId}" else "From ${transaction.fromAccountId}",
+                text = description,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
