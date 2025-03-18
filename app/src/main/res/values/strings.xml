@@ -31,7 +31,7 @@
     <string name="reopen_account">Reopen account</string>
     <string name="open_account">Open account</string>
     <string name="closed">Closed</string>
-    <string name="server_error">Internal server error occured</string>
+    <string name="server_error">Internal server error occurred</string>
     <string name="your_transactions_will_appear_here">Your transactions will appear here.</string>
     <string name="your_account_details_will_appear_here">After opening an account, details will appear here.</string>
     <string name="transfer">Transfer</string>
